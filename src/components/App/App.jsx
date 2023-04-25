@@ -8,8 +8,9 @@ import { addNewContact, deleteContactById } from 'store/contacts/contactsSlice';
 import { updateFilterValue } from 'store/filter/filterSlice';
 
 export default function App() {
-  const { contacts } = useSelector((state) => state.contacts);
-  const {filter} = useSelector((state) => state.filter);
+  const { items: contacts, isLoading, error } = useSelector((state) => state.contacts);
+  const {filter} = useSelector((state) => state);
+  console.log("🚀 ~ file: App.jsx:13 ~ App ~ filter:", filter)
 
   const dispatch = useDispatch();  
 
