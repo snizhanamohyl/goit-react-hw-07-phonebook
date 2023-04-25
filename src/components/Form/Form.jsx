@@ -1,9 +1,14 @@
 import { useState } from 'react';
 import { nanoid } from 'nanoid';
-import PropTypes from 'prop-types'; 
 import css from './Form.module.css';
+import { useGetContactsQuery, useAddContactMutation } from 'store/contacts/contactsSlice';
 
-export default function Form({addContact, contacts}) {
+export default function Form() {
+  const { data: contacts } = useGetContactsQuery();
+  const [addContact, { isLoading}] = useAddContactMutation();
+  console.log("🚀 ~ file: Form.jsx:6 ~ useAddContactMutation:", useAddContactMutation())
+
+
   const [name, setName] = useState(''); 
   const [number, setNumber] = useState(''); 
 
@@ -28,13 +33,22 @@ export default function Form({addContact, contacts}) {
   const onSubmit = (e) => {
     e.preventDefault();
 
-    if (contacts.find(contact => contact.name === name)) {
+    if (contacts?.find(contact => contact.name === name)) {
       alert(`${name} is already in contacts.`);
       return;
     };
 
-    addContact({name, number, id: nanoid() });
+    handleAddContact({name, number, id: nanoid() });
     resetForm();
+  }
+
+  const handleAddContact = async contact => {
+    try {
+      await addContact(contact);
+      console.log('contact is added to your list')
+    } catch (error) {
+      console.log(error)
+    }
   }
   
   return <form className={css.form} onSubmit={onSubmit}>
@@ -62,12 +76,3 @@ export default function Form({addContact, contacts}) {
         </form>
   
 }
-
-Form.propTypes = {
-  contacts: PropTypes.arrayOf(PropTypes.shape({
-    id: PropTypes.string.isRequired,
-    name: PropTypes.string.isRequired,
-     number: PropTypes.string.isRequired,
-  })),
-  addContact: PropTypes.func.isRequired,
-};

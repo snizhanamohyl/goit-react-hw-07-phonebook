@@ -4,26 +4,19 @@ import Filter from 'components/Filter/Filter';
 import css from './App.module.css';
 
 import { useDispatch, useSelector } from 'react-redux';
-import { addNewContact, deleteContactById } from 'store/contacts/contactsSlice';
+import { useGetContactsQuery } from 'store/contacts/contactsSlice';
 import { updateFilterValue } from 'store/filter/filterSlice';
 
 export default function App() {
-  const { items: contacts, isLoading, error } = useSelector((state) => state.contacts);
+  const { data: contacts, isLoading, isError: error } = useGetContactsQuery();
+  console.log("🚀 ~ file: App.jsx:12 ~ App ~ useGetContactsQuery():", useGetContactsQuery())
+
   const {filter} = useSelector((state) => state);
-  console.log("🚀 ~ file: App.jsx:13 ~ App ~ filter:", filter)
 
-  const dispatch = useDispatch();  
-
-  const addContact = (newContact) => {
-    dispatch(addNewContact(newContact))
-  }
-  
-  const deleteContact = (id) => {
-    dispatch(deleteContactById(id))
-  }
+  const dispatch = useDispatch();
 
   const filterContacts = () => {   
-    const filteredContacts = contacts.filter(contact => contact.name.toLowerCase().includes(filter.toLowerCase()));
+    const filteredContacts = contacts?.filter(contact => contact.name.toLowerCase().includes(filter.toLowerCase()));
 
     return filter === "" ?  contacts : filteredContacts;
   }
@@ -33,10 +26,10 @@ export default function App() {
   }
   
   return <div className={css.container}>
-      <h1>Phonebook</h1>
-      <Form contacts={contacts} addContact={addContact}  />
-      {contacts.length !== 0 && <div><h2>Contacts</h2>
-      <Filter filterValue={filter} updateFilter={ updateFilter} />
-      <Contacts deleteContact={deleteContact} contacts={filterContacts()} /></div>}
+    <h1>Phonebook</h1>
+    <Form/>
+    {contacts && contacts.length !== 0 && <div><h2>Contacts</h2>
+      <Filter filterValue={filter} updateFilter={updateFilter} />
+      <Contacts contacts={filterContacts()} /></div>}
     </div>
 }
