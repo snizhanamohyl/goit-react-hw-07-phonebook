@@ -8,8 +8,7 @@ import { useGetContactsQuery } from 'store/contacts/contactsSlice';
 import { updateFilterValue } from 'store/filter/filterSlice';
 
 export default function App() {
-  const { data: contacts, isLoading, isError: error } = useGetContactsQuery();
-  console.log("🚀 ~ file: App.jsx:12 ~ App ~ useGetContactsQuery():", useGetContactsQuery())
+  const { data: contacts } = useGetContactsQuery();
 
   const {filter} = useSelector((state) => state);
 

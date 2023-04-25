@@ -72,7 +72,7 @@ export default function Form() {
             required
             value={number}
             onChange={onChange}/></label>
-          <button className={css.btn} type="submit">Add contact</button>
+    <button className={css.btn} disabled={ isLoading} type="submit">Add contact</button>
         </form>
   
 }
