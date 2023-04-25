@@ -6,8 +6,6 @@ import { useGetContactsQuery, useAddContactMutation } from 'store/contacts/conta
 export default function Form() {
   const { data: contacts } = useGetContactsQuery();
   const [addContact, { isLoading}] = useAddContactMutation();
-  console.log("🚀 ~ file: Form.jsx:6 ~ useAddContactMutation:", useAddContactMutation())
-
 
   const [name, setName] = useState(''); 
   const [number, setNumber] = useState(''); 
